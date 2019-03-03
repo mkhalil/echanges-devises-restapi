@@ -16,6 +16,6 @@ public class TauxJournalierDeviseDto {
 
     BigDecimal montantAchat;
 
-    LocalDate date;
+    LocalDate dateTaux;
 
 }

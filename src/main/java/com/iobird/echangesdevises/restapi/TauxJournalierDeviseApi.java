@@ -7,14 +7,11 @@ import com.iobird.echangesdevises.model.TauxJournalierDevise;
 import com.iobird.echangesdevises.repository.DeviseRepository;
 import com.iobird.echangesdevises.repository.TauxJournalierDeviseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController("/taux-echanges-devises")
 public class TauxJournalierDeviseApi {
 
@@ -34,7 +31,7 @@ public class TauxJournalierDeviseApi {
                 new TauxJournalierDevise(null,
                         tauxJournalierDeviseDto.getMontantVente(),
                         tauxJournalierDeviseDto.getMontantAchat(),
-                        tauxJournalierDeviseDto.getDate(),
+                        tauxJournalierDeviseDto.getDateTaux(),
                         devise));
 
         tauxJournalierDeviseOptional.map(tauxJournalierDeviseRepository::save);
