@@ -28,8 +28,8 @@ public class TauxJournalierDevise {
     LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "device_id")
-    Devise device;
+    @JoinColumn(name = "devise_id")
+    Devise devise;
 
 
 }
