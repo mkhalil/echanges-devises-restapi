@@ -7,12 +7,13 @@ import com.iobird.echangesdevises.model.TauxJournalierDevise;
 import com.iobird.echangesdevises.repository.DeviseRepository;
 import com.iobird.echangesdevises.repository.TauxJournalierDeviseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@CrossOrigin
-@RestController("/taux-echanges-devises")
+@RestController
+@RequestMapping(path = "/taux-echanges-devises", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 public class TauxJournalierDeviseApi {
 
     @Autowired
@@ -23,7 +24,7 @@ public class TauxJournalierDeviseApi {
 
 
     @PostMapping
-    void create(@RequestBody TauxJournalierDeviseDto tauxJournalierDeviseDto) {
+    public Optional<TauxJournalierDevise> create(@RequestBody TauxJournalierDeviseDto tauxJournalierDeviseDto) {
         Optional<Devise> optionalDevise = deviseRepository.findById(tauxJournalierDeviseDto.getDeviseId());
 
         optionalDevise.orElseThrow(() -> new BadRequestException("Devise non trouvé dans la base de données"));
@@ -34,8 +35,13 @@ public class TauxJournalierDeviseApi {
                         tauxJournalierDeviseDto.getDateTaux(),
                         devise));
 
-        tauxJournalierDeviseOptional.map(tauxJournalierDeviseRepository::save);
+        return tauxJournalierDeviseOptional.map(tauxJournalierDeviseRepository::save);
 
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        tauxJournalierDeviseRepository.deleteById(id);
     }
 
     @GetMapping
