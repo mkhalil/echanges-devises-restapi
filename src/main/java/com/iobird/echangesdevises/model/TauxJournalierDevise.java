@@ -25,7 +25,7 @@ public class TauxJournalierDevise {
 
     BigDecimal montantAchat;
 
-    LocalDate date;
+    LocalDate dateTaux;
 
     @ManyToOne
     @JoinColumn(name = "devise_id")

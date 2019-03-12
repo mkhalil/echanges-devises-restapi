@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/taux-echanges-devises", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-public class TauxJournalierDeviseApi {
+public class TauxJournalierDeviseController {
 
     @Autowired
     TauxJournalierDeviseRepository tauxJournalierDeviseRepository;
