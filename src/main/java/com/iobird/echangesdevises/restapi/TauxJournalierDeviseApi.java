@@ -44,9 +44,16 @@ public class TauxJournalierDeviseApi {
         tauxJournalierDeviseRepository.deleteById(id);
     }
 
+    @PutMapping("/{id}")
+    public Optional<TauxJournalierDevise> update(@PathVariable("id") Long id, @RequestBody TauxJournalierDeviseDto tauxJournalierDeviseDto) {
+        Optional<TauxJournalierDevise> tauxJournalierDevise = tauxJournalierDeviseRepository.findById(id);
+
+        return tauxJournalierDevise;
+    }
+
     @GetMapping
     public Iterable<TauxJournalierDevise> list() {
-         return tauxJournalierDeviseRepository.findAll();
+        return tauxJournalierDeviseRepository.findAll();
     }
 
 }
