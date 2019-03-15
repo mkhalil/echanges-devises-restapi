@@ -10,6 +10,8 @@ import java.time.LocalDate;
 @Setter
 public class TauxJournalierDeviseDto {
 
+    Long id;
+
     Long deviseId;
 
     BigDecimal montantVente;
