@@ -9,6 +9,7 @@ import com.iobird.echangesdevises.repository.TauxJournalierDeviseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -37,7 +38,7 @@ public class TauxJournalierDeviseService {
 
     public Optional<TauxJournalierDevise> save(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
         if (tauxJournalierDeviseRepository.checkIfExists(tauxJournalierDeviseDto)) {
-            throw new BadRequestException("Taux devise existe déjà");
+            throw new BadRequestException("Taux existe déjà !");
         }
         Optional<Devise> optionalDevise = deviseRepository.findById(tauxJournalierDeviseDto.getDeviseId());
 
@@ -66,4 +67,8 @@ public class TauxJournalierDeviseService {
     }
 
 
+
+    public Iterable<TauxJournalierDevise> currentTaux(LocalDate dateTaux) {
+        return tauxJournalierDeviseRepository.findByDateTaux(dateTaux);
+    }
 }
