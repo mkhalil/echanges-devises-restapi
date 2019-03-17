@@ -36,11 +36,16 @@ public class TauxJournalierDeviseService {
 
 
     public Optional<TauxJournalierDevise> save(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
+        if (tauxJournalierDeviseRepository.checkIfExists(tauxJournalierDeviseDto)) {
+            throw new BadRequestException("Taux devise existe déjà");
+        }
         Optional<Devise> optionalDevise = deviseRepository.findById(tauxJournalierDeviseDto.getDeviseId());
 
         if (!optionalDevise.isPresent()) {
             throw new BadRequestException("Devise non trouvé dans la base de données");
         }
+
+
 
         Optional<TauxJournalierDevise> tauxJournalierDeviseOptional = optionalDevise.map(devise ->
                 new TauxJournalierDevise(tauxJournalierDeviseDto.getId(),
