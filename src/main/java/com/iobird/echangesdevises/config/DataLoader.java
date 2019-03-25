@@ -15,10 +15,10 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Devise deviseEuro = new Devise(null, "EUR", 1);
+        Devise deviseEuro = new Devise(null, "EUR", Character.valueOf('€'), 1);
         deviseRepository.save(deviseEuro);
 
-        Devise deviseDollar = new Devise(null, "Dollar", 1);
+        Devise deviseDollar = new Devise(null, "Dollar",  Character.valueOf('$'), 1);
         deviseRepository.save(deviseDollar);
     }
 }

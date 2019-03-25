@@ -23,6 +23,8 @@ public class Devise {
 
     String abreviation;
 
+    Character symbole;
+
     Integer unite;
 
 
