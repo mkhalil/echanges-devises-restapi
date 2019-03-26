@@ -29,17 +29,11 @@ public class TauxJournalierDeviseService {
     }
 
     public Optional<TauxJournalierDevise> update(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
-        Optional<TauxJournalierDevise> tauxJournalierDevise = tauxJournalierDeviseRepository.findById(tauxJournalierDeviseDto.getId());
-        if (!tauxJournalierDevise.isPresent()) throw new BadRequestException("Taux journalier non trouvé");
-        return this.save(tauxJournalierDeviseDto);
-
+        return this.flush(tauxJournalierDeviseDto);
     }
 
+    private Optional<TauxJournalierDevise> flush(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
 
-    public Optional<TauxJournalierDevise> save(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
-        if (tauxJournalierDeviseRepository.checkIfExists(tauxJournalierDeviseDto)) {
-            throw new BadRequestException("Taux existe déjà !");
-        }
         Optional<Devise> optionalDevise = deviseRepository.findById(tauxJournalierDeviseDto.getDeviseId());
 
         if (!optionalDevise.isPresent()) {
@@ -56,6 +50,14 @@ public class TauxJournalierDeviseService {
                         devise));
 
         return tauxJournalierDeviseOptional.map(tauxJournalierDeviseRepository::save);
+    }
+
+    public Optional<TauxJournalierDevise> save(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
+        if (tauxJournalierDeviseRepository.checkIfExists(tauxJournalierDeviseDto)) {
+            throw new BadRequestException("Taux existe déjà !");
+        }
+        return this.flush(tauxJournalierDeviseDto);
+
     }
 
     public void deleteById(Long id) {
