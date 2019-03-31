@@ -1,5 +1,6 @@
 package com.iobird.echangesdevises.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeviseMonnaie {
+public class Monnaie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +21,10 @@ public class DeviseMonnaie {
 
     String valeur;
 
-    String typeValeur;
-
-
     @Enumerated(EnumType.STRING)
     EnumTypeMonnaie type;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "devise_id")
     Devise devise;

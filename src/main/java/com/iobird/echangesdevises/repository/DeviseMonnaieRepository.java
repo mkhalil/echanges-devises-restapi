@@ -1,7 +1,7 @@
 package com.iobird.echangesdevises.repository;
 
-import com.iobird.echangesdevises.model.DeviseMonnaie;
+import com.iobird.echangesdevises.model.Monnaie;
 import org.springframework.data.repository.CrudRepository;
 
-public interface DeviseMonnaieRepository extends CrudRepository<DeviseMonnaie, Long> {
+public interface DeviseMonnaieRepository extends CrudRepository<Monnaie, Long> {
 }
