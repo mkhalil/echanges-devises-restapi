@@ -3,7 +3,7 @@ package com.iobird.echangesdevises.service;
 import com.iobird.echangesdevises.dto.TauxJournalierDeviseDto;
 import com.iobird.echangesdevises.exceptions.BadRequestException;
 import com.iobird.echangesdevises.model.Devise;
-import com.iobird.echangesdevises.model.TauxJournalierDevise;
+import com.iobird.echangesdevises.model.TauxDevise;
 import com.iobird.echangesdevises.repository.DeviseRepository;
 import com.iobird.echangesdevises.repository.TauxJournalierDeviseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
-public class TauxJournalierDeviseService {
+public class TauxDeviseService {
 
 
     final
@@ -23,16 +23,16 @@ public class TauxJournalierDeviseService {
     DeviseRepository deviseRepository;
 
     @Autowired
-    public TauxJournalierDeviseService(TauxJournalierDeviseRepository tauxJournalierDeviseRepository, DeviseRepository deviseRepository) {
+    public TauxDeviseService(TauxJournalierDeviseRepository tauxJournalierDeviseRepository, DeviseRepository deviseRepository) {
         this.tauxJournalierDeviseRepository = tauxJournalierDeviseRepository;
         this.deviseRepository = deviseRepository;
     }
 
-    public Optional<TauxJournalierDevise> update(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
+    public Optional<TauxDevise> update(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
         return this.flush(tauxJournalierDeviseDto);
     }
 
-    private Optional<TauxJournalierDevise> flush(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
+    private Optional<TauxDevise> flush(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
 
         Optional<Devise> optionalDevise = deviseRepository.findById(tauxJournalierDeviseDto.getDeviseId());
 
@@ -42,8 +42,8 @@ public class TauxJournalierDeviseService {
 
 
 
-        Optional<TauxJournalierDevise> tauxJournalierDeviseOptional = optionalDevise.map(devise ->
-                new TauxJournalierDevise(tauxJournalierDeviseDto.getId(),
+        Optional<TauxDevise> tauxJournalierDeviseOptional = optionalDevise.map(devise ->
+                new TauxDevise(tauxJournalierDeviseDto.getId(),
                         tauxJournalierDeviseDto.getMontantVente(),
                         tauxJournalierDeviseDto.getMontantAchat(),
                         tauxJournalierDeviseDto.getDateTaux(),
@@ -52,7 +52,7 @@ public class TauxJournalierDeviseService {
         return tauxJournalierDeviseOptional.map(tauxJournalierDeviseRepository::save);
     }
 
-    public Optional<TauxJournalierDevise> save(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
+    public Optional<TauxDevise> save(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
         if (tauxJournalierDeviseRepository.checkIfExists(tauxJournalierDeviseDto)) {
             throw new BadRequestException("Taux existe déjà !");
         }
@@ -64,13 +64,13 @@ public class TauxJournalierDeviseService {
         tauxJournalierDeviseRepository.deleteById(id);
     }
 
-    public Iterable<TauxJournalierDevise> iterableList() {
+    public Iterable<TauxDevise> iterableList() {
         return tauxJournalierDeviseRepository.findAll();
     }
 
 
 
-    public Iterable<TauxJournalierDevise> currentTaux(LocalDate dateTaux) {
+    public Iterable<TauxDevise> currentTaux(LocalDate dateTaux) {
         return tauxJournalierDeviseRepository.findByDateTaux(dateTaux);
     }
 }

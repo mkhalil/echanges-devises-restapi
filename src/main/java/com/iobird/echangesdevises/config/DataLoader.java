@@ -28,9 +28,9 @@ public class DataLoader implements ApplicationRunner {
         Monnaie euros20 = new Monnaie(null, "20",EnumTypeMonnaie.BILLET, deviseEuro);
         Monnaie euros10 = new Monnaie(null, "10",EnumTypeMonnaie.BILLET, deviseEuro);
         Monnaie euros5 = new Monnaie(null, "5",EnumTypeMonnaie.BILLET, deviseEuro);
-        Monnaie euros2 = new Monnaie(null, "2",EnumTypeMonnaie.BILLET, deviseEuro);
-        Monnaie euros1 = new Monnaie(null, "1",EnumTypeMonnaie.BILLET, deviseEuro);
 
+        Monnaie euros2 = new Monnaie(null, "2",EnumTypeMonnaie.PIECE, deviseEuro);
+        Monnaie euros1 = new Monnaie(null, "1",EnumTypeMonnaie.PIECE, deviseEuro);
         Monnaie centime50 = new Monnaie(null, "0.50", EnumTypeMonnaie.PIECE, deviseEuro);
         Monnaie centime20 = new Monnaie(null, "0.20", EnumTypeMonnaie.PIECE, deviseEuro);
         Monnaie centime10 = new Monnaie(null, "0.10", EnumTypeMonnaie.PIECE, deviseEuro);
