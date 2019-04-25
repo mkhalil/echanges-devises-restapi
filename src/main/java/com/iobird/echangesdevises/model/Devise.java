@@ -1,6 +1,5 @@
 package com.iobird.echangesdevises.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +26,7 @@ public class Devise {
     Integer unite;
 
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "devise", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "devise", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     List<Monnaie> monnaieList;
 
 }

@@ -1,5 +1,6 @@
 package com.iobird.operationDevis;
 
+import com.iobird.echangesdevises.repository.DeviseRepository;
 import com.iobird.echangesdevises.repository.EchangeDevisesAchatRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,11 +15,13 @@ public class EchangesDevisesRestApi {
 	@Autowired
 	EchangeDevisesAchatRepository echangeDevisesAchatRepository;
 
+	@Autowired
+	DeviseRepository deviseRepository;
+
+
 	@Test
-	public void enregistrerEchange() {
-
-
+	public void fetchDevise() {
+		deviseRepository.findById(1l);
 	}
-
 }
 

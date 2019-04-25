@@ -1,14 +1,19 @@
 package com.iobird.echangesdevises.config;
 
+import com.iobird.echangesdevises.dto.TauxJournalierDeviseDto;
 import com.iobird.echangesdevises.model.Devise;
 import com.iobird.echangesdevises.model.Monnaie;
 import com.iobird.echangesdevises.model.EnumTypeMonnaie;
 import com.iobird.echangesdevises.repository.DeviseMonnaieRepository;
 import com.iobird.echangesdevises.repository.DeviseRepository;
+import com.iobird.echangesdevises.service.TauxDeviseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +49,30 @@ public class DataLoader implements ApplicationRunner {
 
         Devise deviseDollar = new Devise(null, "Dollar", '$', 1, null);
         deviseRepository.save(deviseDollar);
+
+        addCurrentTauxDevise();
     }
+
+    private void addCurrentTauxDevise() {
+        TauxJournalierDeviseDto tauxEuro = new TauxJournalierDeviseDto();
+        tauxEuro.setDeviseId(1L);
+        tauxEuro.setDateTaux(LocalDate.now());
+        tauxEuro.setMontantAchat(BigDecimal.valueOf(2.5));
+        tauxEuro.setMontantVente(BigDecimal.valueOf(2.7));
+        tauxDeviseService.save(tauxEuro);
+        TauxJournalierDeviseDto tauxDollar = new TauxJournalierDeviseDto();
+        tauxDollar.setDeviseId(2L);
+        tauxDollar.setDateTaux(LocalDate.now());
+        tauxDollar.setMontantAchat(BigDecimal.valueOf(1.4));
+        tauxDollar.setMontantVente(BigDecimal.valueOf(1.7));
+        tauxDeviseService.save(tauxDollar);
+    }
+
+
+    @Autowired
+    TauxDeviseService tauxDeviseService;
+
+
 
     @Autowired
     DeviseMonnaieRepository deviseMonnaieRepository;

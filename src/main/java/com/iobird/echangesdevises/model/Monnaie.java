@@ -25,7 +25,7 @@ public class Monnaie {
     EnumTypeMonnaie type;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "devise_id")
     Devise devise;
 
