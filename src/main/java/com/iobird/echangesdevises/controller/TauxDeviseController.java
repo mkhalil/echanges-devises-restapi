@@ -1,13 +1,12 @@
-package com.iobird.echangesdevises.restapi;
+package com.iobird.echangesdevises.controller;
 
-import com.iobird.echangesdevises.dto.TauxJournalierDeviseDto;
+import com.iobird.echangesdevises.dto.TauxDeviseDto;
 import com.iobird.echangesdevises.model.TauxDevise;
 import com.iobird.echangesdevises.service.TauxDeviseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
@@ -19,7 +18,7 @@ public class TauxDeviseController {
     TauxDeviseService tauxDeviseService;
 
     @PostMapping
-    public Optional<TauxDevise> create(@RequestBody TauxJournalierDeviseDto tauxJournalierDeviseDto) {
+    public Optional<TauxDevise> create(@RequestBody TauxDeviseDto tauxJournalierDeviseDto) {
         return tauxDeviseService.save(tauxJournalierDeviseDto);
 
     }
@@ -30,7 +29,7 @@ public class TauxDeviseController {
     }
 
     @PutMapping("/{id}")
-    public Optional<TauxDevise> update(@PathVariable("id") Long id, @RequestBody TauxJournalierDeviseDto tauxJournalierDeviseDto) {
+    public Optional<TauxDevise> update(@PathVariable("id") Long id, @RequestBody TauxDeviseDto tauxJournalierDeviseDto) {
         tauxJournalierDeviseDto.setId(id);
         return tauxDeviseService.update(tauxJournalierDeviseDto);
     }
@@ -39,12 +38,6 @@ public class TauxDeviseController {
     public Iterable<TauxDevise> list() {
         return tauxDeviseService.iterableList();
     }
-
-    @GetMapping("/today")
-    public Iterable<TauxDevise> search() {
-        return tauxDeviseService.currentTaux(LocalDate.now());
-    }
-
 
 
 }

@@ -30,6 +30,4 @@ public class TauxDevise {
     @ManyToOne
     @JoinColumn(name = "devise_id")
     Devise devise;
-
-
 }

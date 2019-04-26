@@ -25,8 +25,7 @@ public class Devise {
 
     Integer unite;
 
-
     @OneToMany(mappedBy = "devise", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    List<Monnaie> monnaieList;
+    List<Monnaie> monnaies;
 
 }

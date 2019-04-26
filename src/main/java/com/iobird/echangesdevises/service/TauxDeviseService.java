@@ -1,45 +1,48 @@
 package com.iobird.echangesdevises.service;
 
-import com.iobird.echangesdevises.dto.TauxJournalierDeviseDto;
+import com.iobird.echangesdevises.dto.DtoMapper;
+import com.iobird.echangesdevises.dto.TauxDeviseDto;
 import com.iobird.echangesdevises.exceptions.BadRequestException;
 import com.iobird.echangesdevises.model.Devise;
 import com.iobird.echangesdevises.model.TauxDevise;
 import com.iobird.echangesdevises.repository.DeviseRepository;
-import com.iobird.echangesdevises.repository.TauxJournalierDeviseRepository;
+import com.iobird.echangesdevises.repository.TauxDeviseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class TauxDeviseService {
 
 
     final
-    TauxJournalierDeviseRepository tauxJournalierDeviseRepository;
+    TauxDeviseRepository tauxDeviseRepository;
 
     final
     DeviseRepository deviseRepository;
 
     @Autowired
-    public TauxDeviseService(TauxJournalierDeviseRepository tauxJournalierDeviseRepository, DeviseRepository deviseRepository) {
-        this.tauxJournalierDeviseRepository = tauxJournalierDeviseRepository;
+    public TauxDeviseService(TauxDeviseRepository tauxDeviseRepository, DeviseRepository deviseRepository) {
+        this.tauxDeviseRepository = tauxDeviseRepository;
         this.deviseRepository = deviseRepository;
     }
 
-    public Optional<TauxDevise> update(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
+    public Optional<TauxDevise> update(TauxDeviseDto tauxJournalierDeviseDto) {
         return this.flush(tauxJournalierDeviseDto);
     }
 
-    private Optional<TauxDevise> flush(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
+    private Optional<TauxDevise> flush(TauxDeviseDto tauxJournalierDeviseDto) {
 
         Optional<Devise> optionalDevise = deviseRepository.findById(tauxJournalierDeviseDto.getDeviseId());
 
         if (!optionalDevise.isPresent()) {
             throw new BadRequestException("Devise non trouvé dans la base de données");
         }
-
 
 
         Optional<TauxDevise> tauxJournalierDeviseOptional = optionalDevise.map(devise ->
@@ -49,11 +52,11 @@ public class TauxDeviseService {
                         tauxJournalierDeviseDto.getDateTaux(),
                         devise));
 
-        return tauxJournalierDeviseOptional.map(tauxJournalierDeviseRepository::save);
+        return tauxJournalierDeviseOptional.map(tauxDeviseRepository::save);
     }
 
-    public Optional<TauxDevise> save(TauxJournalierDeviseDto tauxJournalierDeviseDto) {
-        if (tauxJournalierDeviseRepository.checkIfExists(tauxJournalierDeviseDto)) {
+    public Optional<TauxDevise> save(TauxDeviseDto tauxJournalierDeviseDto) {
+        if (tauxDeviseRepository.checkIfExists(tauxJournalierDeviseDto)) {
             throw new BadRequestException("Taux existe déjà !");
         }
         return this.flush(tauxJournalierDeviseDto);
@@ -61,16 +64,17 @@ public class TauxDeviseService {
     }
 
     public void deleteById(Long id) {
-        tauxJournalierDeviseRepository.deleteById(id);
+        tauxDeviseRepository.deleteById(id);
+    }
+
+    public List<TauxDeviseDto> search(LocalDate dateTaux) {
+        List<TauxDevise> tauxDevises = Optional.ofNullable(dateTaux).map(tauxDeviseRepository::findByDateTaux).orElse(tauxDeviseRepository.findAll());
+        return tauxDevises.stream().map(DtoMapper.INSTANCE::toDto).collect(Collectors.toList());
     }
 
     public Iterable<TauxDevise> iterableList() {
-        return tauxJournalierDeviseRepository.findAll();
+        return tauxDeviseRepository.findAll();
     }
 
 
-
-    public Iterable<TauxDevise> currentTaux(LocalDate dateTaux) {
-        return tauxJournalierDeviseRepository.findByDateTaux(dateTaux);
-    }
 }
