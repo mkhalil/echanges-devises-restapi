@@ -4,9 +4,12 @@ import com.iobird.echangesdevises.dto.TauxDeviseDto;
 import com.iobird.echangesdevises.model.TauxDevise;
 import com.iobird.echangesdevises.service.TauxDeviseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -14,8 +17,12 @@ import java.util.Optional;
 public class TauxDeviseController {
 
 
+    private final TauxDeviseService tauxDeviseService;
+
     @Autowired
-    TauxDeviseService tauxDeviseService;
+    public TauxDeviseController(TauxDeviseService tauxDeviseService) {
+        this.tauxDeviseService = tauxDeviseService;
+    }
 
     @PostMapping
     public Optional<TauxDevise> create(@RequestBody TauxDeviseDto tauxJournalierDeviseDto) {
@@ -35,8 +42,9 @@ public class TauxDeviseController {
     }
 
     @GetMapping
-    public Iterable<TauxDevise> list() {
-        return tauxDeviseService.iterableList();
+    public List<TauxDeviseDto> search(@RequestParam(required = false, name = "dateTaux")
+                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTaux) {
+        return tauxDeviseService.search(dateTaux);
     }
 
 

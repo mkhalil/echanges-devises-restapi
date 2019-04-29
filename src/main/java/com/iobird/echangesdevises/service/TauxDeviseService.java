@@ -3,27 +3,28 @@ package com.iobird.echangesdevises.service;
 import com.iobird.echangesdevises.dto.DtoMapper;
 import com.iobird.echangesdevises.dto.TauxDeviseDto;
 import com.iobird.echangesdevises.exceptions.BadRequestException;
+import com.iobird.echangesdevises.exceptions.ResourceNotFoundException;
 import com.iobird.echangesdevises.model.Devise;
 import com.iobird.echangesdevises.model.TauxDevise;
 import com.iobird.echangesdevises.repository.DeviseRepository;
 import com.iobird.echangesdevises.repository.TauxDeviseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class TauxDeviseService {
 
 
-    final
+    private final
     TauxDeviseRepository tauxDeviseRepository;
 
-    final
+    private final
     DeviseRepository deviseRepository;
 
     @Autowired
@@ -43,7 +44,6 @@ public class TauxDeviseService {
         if (!optionalDevise.isPresent()) {
             throw new BadRequestException("Devise non trouvé dans la base de données");
         }
-
 
         Optional<TauxDevise> tauxJournalierDeviseOptional = optionalDevise.map(devise ->
                 new TauxDevise(tauxJournalierDeviseDto.getId(),
@@ -69,11 +69,10 @@ public class TauxDeviseService {
 
     public List<TauxDeviseDto> search(LocalDate dateTaux) {
         List<TauxDevise> tauxDevises = Optional.ofNullable(dateTaux).map(tauxDeviseRepository::findByDateTaux).orElse(tauxDeviseRepository.findAll());
+        if (CollectionUtils.isEmpty(tauxDevises)) {
+            throw new ResourceNotFoundException("Aucun taux trouvés");
+        }
         return tauxDevises.stream().map(DtoMapper.INSTANCE::toDto).collect(Collectors.toList());
-    }
-
-    public Iterable<TauxDevise> iterableList() {
-        return tauxDeviseRepository.findAll();
     }
 
 
