@@ -33,17 +33,19 @@ public class TauxDeviseService {
         this.deviseRepository = deviseRepository;
     }
 
-    public Optional<TauxDevise> update(TauxDeviseDto tauxJournalierDeviseDto) {
-        return this.flush(tauxJournalierDeviseDto);
+    public TauxDeviseDto update(Long id, TauxDeviseDto tauxJournalierDeviseDto) {
+        tauxJournalierDeviseDto.setId(id);
+        return this.save(tauxJournalierDeviseDto);
     }
 
-    private Optional<TauxDevise> flush(TauxDeviseDto tauxJournalierDeviseDto) {
+    private TauxDeviseDto save(TauxDeviseDto tauxJournalierDeviseDto) {
 
         Optional<Devise> optionalDevise = deviseRepository.findById(tauxJournalierDeviseDto.getDeviseId());
 
         if (!optionalDevise.isPresent()) {
             throw new BadRequestException("Devise non trouvé dans la base de données");
         }
+
 
         Optional<TauxDevise> tauxJournalierDeviseOptional = optionalDevise.map(devise ->
                 new TauxDevise(tauxJournalierDeviseDto.getId(),
@@ -52,14 +54,14 @@ public class TauxDeviseService {
                         tauxJournalierDeviseDto.getDateTaux(),
                         devise));
 
-        return tauxJournalierDeviseOptional.map(tauxDeviseRepository::save);
+        return tauxJournalierDeviseOptional.map(tauxDeviseRepository::save).map(DtoMapper.INSTANCE::toDto).orElseGet(TauxDeviseDto::new);
     }
 
-    public Optional<TauxDevise> save(TauxDeviseDto tauxJournalierDeviseDto) {
+    public TauxDeviseDto newTauxDevise(TauxDeviseDto tauxJournalierDeviseDto) {
         if (tauxDeviseRepository.checkIfExists(tauxJournalierDeviseDto)) {
             throw new BadRequestException("Taux existe déjà !");
         }
-        return this.flush(tauxJournalierDeviseDto);
+        return this.save(tauxJournalierDeviseDto);
 
     }
 
@@ -73,6 +75,10 @@ public class TauxDeviseService {
             throw new ResourceNotFoundException("Aucun taux trouvé");
         }
         return tauxDevises.stream().map(DtoMapper.INSTANCE::toDto).collect(Collectors.toList());
+    }
+
+    public TauxDeviseDto findById(Long id) {
+        return tauxDeviseRepository.findById(id).map(DtoMapper.INSTANCE::toDto).orElseThrow(() -> new ResourceNotFoundException("Taux devise non trouvé"));
     }
 
 

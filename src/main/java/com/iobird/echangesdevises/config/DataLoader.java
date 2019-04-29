@@ -62,12 +62,12 @@ public class DataLoader implements ApplicationRunner {
         tauxEuro.setDateTaux(LocalDate.now());
         tauxEuro.setMontantAchat(BigDecimal.valueOf(2.5));
         tauxEuro.setMontantVente(BigDecimal.valueOf(2.7));
-        tauxDeviseService.save(tauxEuro);
+        tauxDeviseService.newTauxDevise(tauxEuro);
         TauxDeviseDto tauxDollar = new TauxDeviseDto();
         tauxDollar.setDeviseId(2L);
         tauxDollar.setDateTaux(LocalDate.now());
         tauxDollar.setMontantAchat(BigDecimal.valueOf(1.4));
         tauxDollar.setMontantVente(BigDecimal.valueOf(1.7));
-        tauxDeviseService.save(tauxDollar);
+        tauxDeviseService.newTauxDevise(tauxDollar);
     }
 }
