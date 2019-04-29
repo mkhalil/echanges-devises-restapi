@@ -24,13 +24,13 @@ public class DeviseService {
     public List<DeviseDto> findAll() {
         List<DeviseDto> deviseDtoList = deviseRepository.findAll().stream().map(DtoMapper.INSTANCE::toDto).collect(Collectors.toList());
         if (CollectionUtils.isEmpty(deviseDtoList)) {
-            throw new ResourceNotFoundException("Aucun devise trouvés");
+            throw new ResourceNotFoundException("Aucune devise trouvée");
         }
         return deviseDtoList;
     }
 
     public DeviseDto findById(Long id) {
-        return deviseRepository.findById(id).map(DtoMapper.INSTANCE::toDto).orElseThrow(() -> new ResourceNotFoundException("Devise non trouvé"));
+        return deviseRepository.findById(id).map(DtoMapper.INSTANCE::toDto).orElseThrow(() -> new ResourceNotFoundException("Aucune devise trouvée"));
     }
 
 }

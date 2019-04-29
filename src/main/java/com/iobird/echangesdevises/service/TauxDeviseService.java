@@ -70,7 +70,7 @@ public class TauxDeviseService {
     public List<TauxDeviseDto> search(LocalDate dateTaux) {
         List<TauxDevise> tauxDevises = Optional.ofNullable(dateTaux).map(tauxDeviseRepository::findByDateTaux).orElse(tauxDeviseRepository.findAll());
         if (CollectionUtils.isEmpty(tauxDevises)) {
-            throw new ResourceNotFoundException("Aucun taux trouvés");
+            throw new ResourceNotFoundException("Aucun taux trouvé");
         }
         return tauxDevises.stream().map(DtoMapper.INSTANCE::toDto).collect(Collectors.toList());
     }
